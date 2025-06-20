@@ -1,51 +1,147 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Book Catalog</title>
-  <link rel="stylesheet" href="style.css" />
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Book Catalog with Sidebar</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" />
+    <style>
+        body {
+            background: #f9f9f9;
+        }
+
+        .sidebar {
+            height: 100vh;
+            position: sticky;
+            top: 0;
+            padding: 1rem;
+            background-color: #6ab04c;
+            color: white;
+        }
+
+            .sidebar h4 {
+                margin-bottom: 1.5rem;
+            }
+
+            .sidebar ul {
+                list-style: none;
+                padding-left: 0;
+            }
+
+            .sidebar li {
+                padding: 0.5rem 0;
+                cursor: pointer;
+            }
+
+                .sidebar li:hover, .sidebar li.active {
+                    text-decoration: underline;
+                    font-weight: bold;
+                }
+
+        .book-card img {
+            height: 400px;
+            object-fit: cover;
+        }
+    </style>
 </head>
 <body>
-  <header>
-    <h1>📚 My Book Catalog</h1>
-    <p>A collection of books I love.</p>
-  </header>
 
-  <main class="catalog">
-    <!-- Book cards inserted here -->
-    <div class="book-card">
-      <img src="https://covers.openlibrary.org/b/id/9879782-L.jpg" alt="Book cover">
-      <div class="book-info">
-        <h2>The Great Gatsby</h2>
-        <h3>by F. Scott Fitzgerald</h3>
-        <p>A story of the wealthy Jay Gatsby and his love for Daisy Buchanan during the Roaring Twenties.</p>
-      </div>
+    <div class="container-fluid">
+        <div class="row">
+
+            <!-- Sidebar -->
+            <nav class="col-md-3 col-lg-2 sidebar d-none d-md-block">
+                <h4>Categories</h4>
+                <ul id="categoryList">
+                    <li class="active" data-category="all">All</li>
+                    <li data-category="fiction">Fiction</li>
+                    <li data-category="nonfiction">Non-fiction</li>
+                    <li data-category="scifi">Sci-Fi</li>
+                    <li data-category="fantasy">Fantasy</li>
+                </ul>
+            </nav>
+
+            <!-- Main content -->
+            <main class="col-md-9 col-lg-10 py-4">
+                <h1>📚 Book Catalog</h1>
+                <div id="bookCatalog" class="d-flex flex-wrap gap-4">
+                    <!-- Books will be inserted here -->
+                </div>
+            </main>
+        </div>
     </div>
 
-    <div class="book-card">
-      <img src="https://covers.openlibrary.org/b/id/10286701-L.jpg" alt="Book cover">
-      <div class="book-info">
-        <h2>1984</h2>
-        <h3>by George Orwell</h3>
-        <p>A dystopian novel about totalitarianism, surveillance, and loss of freedom.</p>
-      </div>
-    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+    // Sample book data with categories
+    const books = [
+      {
+        title: "The Great Gatsby",
+        author: "F. Scott Fitzgerald",
+        description: "A classic Jazz Age tale.",
+        img: "https://upload.wikimedia.org/wikipedia/commons/0/0b/Celestial_eyes-The_Great_Gatsby_cover-Francis_Cugat-1925.jpg",
+        category: "fiction"
+      },
+      {
+        title: "Sapiens",
+        author: "Yuval Noah Harari",
+        description: "A brief history of humankind.",
+        img: "https://images-na.ssl-images-amazon.com/images/I/41X5kRMV6DL._SX331_BO1,204,203,200_.jpg",
+        category: "nonfiction"
+      },
+      {
+        title: "Dune",
+        author: "Frank Herbert",
+        description: "Epic sci-fi saga of desert planet Arrakis.",
+        img: "https://images-na.ssl-images-amazon.com/images/I/41EHwAtogAL._SX331_BO1,204,203,200_.jpg",
+        category: "scifi"
+      },
+      {
+        title: "Harry Potter and the Sorcerer's Stone",
+        author: "J.K. Rowling",
+        description: "The beginning of a magical fantasy journey.",
+        img: "https://images-na.ssl-images-amazon.com/images/I/51UoqRAxwEL._SX331_BO1,204,203,200_.jpg",
+        category: "fantasy"
+      }
+    ];
 
-    <div class="book-card">
-      <img src="https://covers.openlibrary.org/b/id/11153238-L.jpg" alt="Book cover">
-      <div class="book-info">
-        <h2>To Kill a Mockingbird</h2>
-        <h3>by Harper Lee</h3>
-        <p>Explores racial injustice and childhood innocence in the Deep South.</p>
-      </div>
-    </div>
-  </main>
+    const bookCatalog = document.getElementById('bookCatalog');
+    const categoryList = document.getElementById('categoryList');
 
-  <footer>
-    <p>📖 Made with love — 2025</p>
-  </footer>
+    // Function to display books filtered by category
+    function displayBooks(category = 'all') {
+      bookCatalog.innerHTML = '';
+      const filteredBooks = category === 'all' ? books : books.filter(b => b.category === category);
+      filteredBooks.forEach(book => {
+        const bookCard = document.createElement('div');
+        bookCard.className = 'card book-card';
+        bookCard.style.width = '18rem';
+        bookCard.innerHTML = `
+          <img src="${book.img}" class="card-img-top" alt="${book.title}">
+          <div class="card-body">
+            <h5 class="card-title">${book.title}</h5>
+            <h6 class="card-subtitle mb-2 text-muted">by ${book.author}</h6>
+            <p class="card-text">${book.description}</p>
+          </div>
+        `;
+        bookCatalog.appendChild(bookCard);
+      });
+    }
 
-  <script src="script.js"></script>
+    // Initially display all books
+    displayBooks();
+
+    // Category click event handler
+    categoryList.addEventListener('click', e => {
+      if(e.target.tagName === 'LI') {
+        // Remove active class from all
+        Array.from(categoryList.children).forEach(li => li.classList.remove('active'));
+        // Add active to clicked
+        e.target.classList.add('active');
+        // Display books by category
+        displayBooks(e.target.getAttribute('data-category'));
+      }
+    });
+    </script>
 </body>
 </html>
